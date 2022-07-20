@@ -1,3 +1,4 @@
+//Esta es la creación del tablero
 (function () {
   self.Board = function (width, height) {
     this.width = width;
@@ -9,6 +10,7 @@
     this.playing = false;
   };
 
+  // vamos a hacer una copia del arreglo para que las barras se muevan de acuerdo al movimiento
   self.Board.prototype = {
     get elements() {
       let elements = this.bars.map(function (bar) {
@@ -19,6 +21,7 @@
     },
   };
 })();
+//Esta es la creación de la pelota
 (function () {
   self.Ball = function (x, y, radius, board) {
     this.x = x;
@@ -35,6 +38,8 @@
     board.ball = this;
     this.kind = "circle";
   };
+
+
   self.Ball.prototype = {
     move: function () {
       this.x += this.speed_x * this.direction;
@@ -46,7 +51,9 @@
     get height() {
       return this.radius * 2;
     },
+
     collision: function (bar) {
+      //calcula el angulo del movimiento de la pelota y el cambio de dirección
       let relative_intersect_y = bar.y + bar.height / 2 - this.y;
 
       let normalized_intersect_y = relative_intersect_y / (bar.height / 2);
@@ -61,6 +68,7 @@
     },
   };
 })();
+
 (function () {
   self.Bar = function (x, y, width, height, board) {
     this.x = x;
@@ -125,6 +133,7 @@
   };
 
   function hit(a, b) {
+    //revisa las colisiones con las posiciones x y
     let hit = false;
     if (b.x + b.width >= a.x && b.x < a.x + a.width) {
       if (b.y + b.height >= a.y && b.y < a.y + a.height) hit = true;
@@ -153,13 +162,15 @@
   }
 })();
 
+//Aquí estamos pintando el tablero.
 let board = new Board(800, 400);
 let bar = new Bar(20, 100, 40, 100, board);
 let bar_2 = new Bar(735, 100, 40, 100, board);
 let canvas = document.getElementById("canvas");
 let board_view = new BoardView(canvas, board);
-let ball = new Ball(350, 100, 10, board);
+let ball = new Ball(350, 200, 10, board);
 
+//Aquí escogemos las teclas para jugar
 window.addEventListener("keydown", function (ev) {
   if (ev.defaultPrevented) {
     return;
@@ -184,7 +195,7 @@ window.addEventListener("keydown", function (ev) {
 
 
 board_view.draw();
-
+// Aquí le damos animación a las barras
 window.requestAnimationFrame(controller);
 
 function controller() {
