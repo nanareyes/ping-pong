@@ -135,7 +135,6 @@
     if (a.x <= b.x && a.x + a.width >= b.x + b.width) {
       if (a.y <= b.y && a.y + a.height >= b.y + b.height) hit = true;
     }
-
     return hit;
   }
 
@@ -161,24 +160,28 @@ let canvas = document.getElementById("canvas");
 let board_view = new BoardView(canvas, board);
 let ball = new Ball(350, 100, 10, board);
 
-document.addEventListener("keydown", function (ev) {
-  if (ev.code == 38) {
-    ev.preventDefault();
-    bar.up();
-  } else if (ev.code == 40) {
-    ev.preventDefault();
-    bar.down();
-  } else if (ev.code === 87) {
+window.addEventListener("keydown", function (ev) {
+  if (ev.defaultPrevented) {
+    return;
+  }
+  if (ev.code == "ArrowUp") {
     ev.preventDefault();
     bar_2.up();
-  } else if (ev.code === 83) {
+  } else if (ev.code == "ArrowDown") {
     ev.preventDefault();
     bar_2.down();
-  } else if (ev.code === 32) {
+  } else if (ev.code === "KeyW") {
+    ev.preventDefault();
+    bar.up();
+  } else if (ev.code === "KeyS") {
+    ev.preventDefault();
+    bar.down();
+  } else if (ev.code === "Space") {
     ev.preventDefault();
     board.playing = !board.playing;
   }
 });
+
 
 board_view.draw();
 
